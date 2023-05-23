@@ -1,0 +1,30 @@
+import { Message } from './message';
+import { MessageRepository } from './message.repository';
+
+export class InMemoryMessageRepository implements MessageRepository {
+  messages = new Map<string, Message>();
+
+  async save(msg: Message) {
+    this._save(msg);
+    return Promise.resolve();
+  }
+
+  async getMessageById(messageId: string) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return Promise.resolve(this.messages.get(messageId)!);
+  }
+
+  givenExistingMessages = (messages: Message[]) => {
+    messages.forEach(this._save);
+  };
+
+  getMessagesByUser(userId: string): Promise<Message[]> {
+    return Promise.resolve(
+      Array.from(this.messages.values()).filter((msg) => msg.author === userId),
+    );
+  }
+
+  private _save = (msg: Message) => {
+    this.messages.set(msg.id, msg);
+  };
+}
