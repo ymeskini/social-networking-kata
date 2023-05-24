@@ -1,4 +1,4 @@
-import { BaseDateProvider } from '../date.provider';
+import { BaseDateProvider } from '../application/date.provider';
 
 describe('DateProvider', () => {
   let dateProvider: BaseDateProvider;

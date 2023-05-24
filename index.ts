@@ -2,13 +2,17 @@
 import { Command } from 'commander';
 import { randomUUID } from 'crypto';
 
-import PostMessageUseCase, {
+// infra
+import { FileSystemMessageRepository } from './src/infra/message.fs.repository';
+import { RealDateProvider } from './src/infra/real-date.provider';
+
+// usecases
+import { EditMessageUseCase } from './src/application/usecases/edit-message.usecase';
+import {
   PostMessageCommand,
-} from './src/post-message.usecase';
-import { FileSystemMessageRepository } from './src/message.fs.repository';
-import { RealDateProvider } from './src/real-date-provider';
-import { ViewTimelineUseCase } from './src/view-timeline.usecase';
-import { EditMessageUseCase } from './src/edit-message.usecase';
+  PostMessageUseCase,
+} from './src/application/usecases/post-message.usecase';
+import { ViewTimelineUseCase } from './src/application/usecases/view-timeline.usecase';
 
 const program = new Command();
 

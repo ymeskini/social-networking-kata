@@ -1,11 +1,11 @@
-import { BaseDateProvider, DateProvider } from './date.provider';
+import { BaseDateProvider, DateProvider } from '../application/date.provider';
 
 export class RealDateProvider extends BaseDateProvider implements DateProvider {
   getNow() {
     return new Date();
   }
 
-  formatRelative(date: Date) {
+  override formatRelative(date: Date) {
     return super.formatRelative(date, this.getNow());
   }
 }

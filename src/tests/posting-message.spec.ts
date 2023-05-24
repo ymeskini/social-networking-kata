@@ -1,19 +1,16 @@
-import {
-  EmptyMessageError,
-  MessageTooLongError,
-} from '../post-message.usecase';
+import { randomUUID } from 'crypto';
+import { EmptyMessageError, MessageTooLongError } from '../domain/message';
 import { MessageBuilder } from './message.builder';
 import { MessagingFixture, createMessagingFixture } from './messaging.fixture';
 
 describe('Feature: Posting a message', () => {
   let fixture: MessagingFixture;
   let messageBuilder: MessageBuilder;
+  const id = randomUUID();
 
   beforeEach(() => {
     fixture = createMessagingFixture();
-    messageBuilder = new MessageBuilder()
-      .withAuthor('Alice')
-      .withId('message-id');
+    messageBuilder = new MessageBuilder().withAuthor('Alice').withId(id);
   });
 
   describe('Rule: A message can contain a maximum of 280 characters', () => {
@@ -21,7 +18,7 @@ describe('Feature: Posting a message', () => {
       fixture.givenNowIs(new Date('2023-02-07T10:40:00.000Z'));
 
       await fixture.whenUserPostAMessage({
-        id: 'message-id',
+        id: id,
         text: 'Hello World',
         author: 'Alice',
       });
@@ -38,7 +35,7 @@ describe('Feature: Posting a message', () => {
       fixture.givenNowIs(new Date('2023-02-07T10:40:00.000Z'));
 
       await fixture.whenUserPostAMessage({
-        id: 'message-id',
+        id: id,
         text: 'Hello World'.repeat(100),
         author: 'Alice',
       });
@@ -49,10 +46,12 @@ describe('Feature: Posting a message', () => {
 
   describe("Rule: A message can't be empty", () => {
     test("Alice can't post an empty message", async () => {
+      const id = randomUUID();
+
       fixture.givenNowIs(new Date('2023-02-07T10:40:00.000Z'));
 
       await fixture.whenUserPostAMessage({
-        id: 'message-id',
+        id: id,
         text: '',
         author: 'Alice',
       });
@@ -62,12 +61,15 @@ describe('Feature: Posting a message', () => {
 
     test("Alice can't post a message with only spaces", async () => {
       fixture.givenNowIs(new Date('2023-02-07T10:40:00.000Z'));
+      const id = randomUUID();
 
       await fixture.whenUserPostAMessage({
-        id: 'message-id',
+        id: id,
         text: ' '.repeat(10),
         author: 'Alice',
       });
+
+      fixture.thenErrorShouldBe(EmptyMessageError);
     });
   });
 });

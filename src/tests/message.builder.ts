@@ -1,62 +1,35 @@
-import { randomUUID } from 'crypto';
-import { Message } from '../message';
+import { UUID, randomUUID } from 'crypto';
+import { Message, MessageText } from '../domain/message';
 
 export class MessageBuilder {
-  private message: Message;
-  constructor() {
-    this.message = {
-      id: 'message-id',
-      text: 'some text',
-      author: 'Author',
-      publishedAt: new Date('2023-02-07T10:40:00.000Z'),
-    };
-  }
+  private id = randomUUID();
+  private text: MessageText = MessageText.of('Message text');
+  private author = 'Author';
+  private publishedAt: Date = new Date();
 
-  withId(id: string) {
-    this.message.id = id;
+  withId(id: UUID) {
+    this.id = id;
     return this;
   }
 
   withText(text: string) {
-    this.message.text = text;
+    this.text = MessageText.of(text);
     return this;
   }
 
   withAuthor(author: string) {
-    this.message.author = author;
+    this.author = author;
     return this;
   }
 
   withPublishedAt(publishedAt: Date) {
-    this.message.publishedAt = publishedAt;
+    this.publishedAt = publishedAt;
     return this;
   }
 
   build() {
-    return this.message;
-  }
-}
-
-type MessageDirectorProps = {
-  text: string;
-  publishedAt?: Date;
-};
-export class MessageDirector {
-  createAliceMessage({ text, publishedAt }: MessageDirectorProps) {
-    return new MessageBuilder()
-      .withAuthor('Alice')
-      .withText(text)
-      .withId(randomUUID())
-      .withPublishedAt(publishedAt || new Date('2023-02-07T10:40:00.000Z'))
-      .build();
-  }
-
-  createBillMessage({ text, publishedAt }: MessageDirectorProps) {
-    return new MessageBuilder()
-      .withAuthor('Bill')
-      .withText(text)
-      .withId(randomUUID())
-      .withPublishedAt(publishedAt || new Date('2023-02-07T10:40:00.000Z'))
-      .build();
+    const previousId = this.id;
+    this.id = randomUUID();
+    return new Message(previousId, this.text, this.author, this.publishedAt);
   }
 }

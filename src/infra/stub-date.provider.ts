@@ -1,4 +1,4 @@
-import { BaseDateProvider, DateProvider } from '../date.provider';
+import { BaseDateProvider, DateProvider } from '../application/date.provider';
 
 export class StubDateProvider extends BaseDateProvider implements DateProvider {
   now!: Date;
@@ -6,7 +6,7 @@ export class StubDateProvider extends BaseDateProvider implements DateProvider {
     return this.now;
   }
 
-  formatRelative(date: Date) {
+  override formatRelative(date: Date) {
     return super.formatRelative(date, this.now);
   }
 }
