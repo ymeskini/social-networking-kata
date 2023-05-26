@@ -64,6 +64,7 @@ export const createMessagingFixture = () => {
         await messageRepository.getMessageById(expectedMessage.id),
       );
     },
+    messageRepository,
   };
 };
 

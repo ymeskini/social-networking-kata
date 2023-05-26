@@ -6,7 +6,7 @@ import {
 export class InMemoryFolloweeRepository implements FolloweeRepository {
   followeesByUser = new Map<string, string[]>();
 
-  saveFollowee(followee: Followee): Promise<void> {
+  async saveFollowee(followee: Followee): Promise<void> {
     this.addFollowee(followee);
     return Promise.resolve();
   }
@@ -15,7 +15,7 @@ export class InMemoryFolloweeRepository implements FolloweeRepository {
     followees.forEach((followee) => this.addFollowee(followee));
   }
 
-  getFolloweesOfUser(user: string): Promise<string[]> {
+  async getFolloweesOfUser(user: string): Promise<string[]> {
     return Promise.resolve(this.followeesByUser.get(user) ?? []);
   }
 

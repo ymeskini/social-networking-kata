@@ -5,4 +5,5 @@ export type Followee = {
 
 export interface FolloweeRepository {
   saveFollowee(followee: Followee): Promise<void>;
+  getFolloweesOfUser(user: string): Promise<string[]>;
 }

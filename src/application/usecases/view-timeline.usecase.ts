@@ -1,3 +1,4 @@
+import { Timeline } from '../../domain/timeline';
 import { DateProvider } from '../date.provider';
 import { MessageRepository } from '../message.repository';
 
@@ -16,14 +17,8 @@ export class ViewTimelineUseCase {
   async handle({ user }: { user: string }): Promise<TimelineMessage[]> {
     const messagesOfCurrentUser =
       await this.messageRepository.getMessagesByUser(user);
-    return messagesOfCurrentUser
-      .sort(
-        (msgA, msgB) => msgB.publishedAt.getTime() - msgA.publishedAt.getTime(),
-      )
-      .map((msg) => ({
-        author: msg.author,
-        text: msg.text,
-        publicationTime: this.dateProvider.formatRelative(msg.publishedAt),
-      }));
+
+    const timeline = new Timeline(messagesOfCurrentUser, this.dateProvider);
+    return timeline.data;
   }
 }
