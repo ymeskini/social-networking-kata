@@ -1,17 +1,18 @@
 import { Timeline } from '../../domain/timeline';
-import { DateProvider } from '../date.provider';
 import { FolloweeRepository } from '../followee.repository';
 import { MessageRepository } from '../message.repository';
-import { TimelineMessage } from './view-timeline.usecase';
+import { TimelinePresenter } from '../timeline-presenter';
 
 export class ViewWallUseCase {
   constructor(
     private readonly messageRepository: MessageRepository,
     private readonly followeeRepository: FolloweeRepository,
-    private readonly dateProvider: DateProvider,
   ) {}
 
-  async handle(user: string): Promise<TimelineMessage[]> {
+  async handle(
+    user: string,
+    timelinePresenter: TimelinePresenter,
+  ): Promise<void> {
     const followees = await this.followeeRepository.getFolloweesOfUser(user);
     const messages = await Promise.all(
       [user, ...followees].map((user) =>
@@ -19,7 +20,7 @@ export class ViewWallUseCase {
       ),
     );
 
-    const timeline = new Timeline(messages.flat(), this.dateProvider);
-    return timeline.data;
+    const timeline = new Timeline(messages.flat());
+    timelinePresenter.show(timeline);
   }
 }

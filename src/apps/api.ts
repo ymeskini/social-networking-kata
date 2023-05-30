@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 import { PrismaClient } from '@prisma/client';
-import Fastify, { FastifyInstance } from 'fastify';
+import Fastify, { FastifyInstance, FastifyReply } from 'fastify';
 import httpErrors from 'http-errors';
 
 // infra
@@ -20,27 +20,31 @@ import {
   FollowUserUseCase,
 } from '../application/usecases/follow-user.usecase';
 import { ViewWallUseCase } from '../application/usecases/view-wall.usecase';
+import { TimelinePresenter } from '../application/timeline-presenter';
+import { Timeline } from '../domain/timeline';
+
+class ApiTimeLinePresenter implements TimelinePresenter {
+  constructor(private readonly reply: FastifyReply) {}
+  show(timeline: Timeline): void {
+    this.reply.status(200).send(timeline.data);
+  }
+}
 
 const prismaClient = new PrismaClient();
 
 const messageRepository = new PrismaMessageRepository(prismaClient);
 const followeeRepository = new PrismaFolloweeRepository(prismaClient);
 const dateProvider = new RealDateProvider();
-
 const postMessageUseCase = new PostMessageUseCase(
   messageRepository,
   dateProvider,
 );
-const viewTimelineUseCase = new ViewTimelineUseCase(
-  messageRepository,
-  dateProvider,
-);
+const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository);
 const editMessageUseCase = new EditMessageUseCase(messageRepository);
 const followUserUseCase = new FollowUserUseCase(followeeRepository);
 const viewWallUseCase = new ViewWallUseCase(
   messageRepository,
   followeeRepository,
-  dateProvider,
 );
 
 const fastify = Fastify({ logger: true });
@@ -54,8 +58,12 @@ const routes = async (fastifyInstance: FastifyInstance) => {
         author: request.body.user,
       };
       try {
-        await postMessageUseCase.handle(postMessageCommand);
-        reply.status(201);
+        const result = await postMessageUseCase.handle(postMessageCommand);
+        if (result.isOk()) {
+          reply.status(201);
+          return;
+        }
+        reply.send(httpErrors[400](result.error.message));
       } catch (error) {
         console.error(error);
         reply.send(httpErrors[500](error as string));
@@ -67,11 +75,15 @@ const routes = async (fastifyInstance: FastifyInstance) => {
     '/edit',
     async (request, reply) => {
       try {
-        await editMessageUseCase.handle({
+        const result = await editMessageUseCase.handle({
           messageId: request.body.messageId,
           text: request.body.message,
         });
-        reply.status(204);
+        if (result.isOk()) {
+          reply.status(204);
+          return;
+        }
+        reply.send(httpErrors[400](result.error.message));
       } catch (error) {
         console.error(error);
         reply.send(httpErrors[500](error as string));
@@ -99,11 +111,14 @@ const routes = async (fastifyInstance: FastifyInstance) => {
   fastifyInstance.post<{ Body: { user: string } }>(
     '/view',
     async (request, reply) => {
+      const timelinePresenter = new ApiTimeLinePresenter(reply);
       try {
-        const messages = await viewTimelineUseCase.handle({
-          user: request.body.user,
-        });
-        reply.send(messages);
+        await viewTimelineUseCase.handle(
+          {
+            user: request.body.user,
+          },
+          timelinePresenter,
+        );
       } catch (error) {
         console.error(error);
         reply.send(httpErrors[500](error as string));
@@ -114,9 +129,9 @@ const routes = async (fastifyInstance: FastifyInstance) => {
   fastifyInstance.post<{ Body: { user: string } }>(
     '/wall',
     async (request, reply) => {
+      const timelinePresenter = new ApiTimeLinePresenter(reply);
       try {
-        const wall = await viewWallUseCase.handle(request.body.user);
-        reply.send(wall);
+        await viewWallUseCase.handle(request.body.user, timelinePresenter);
       } catch (error) {
         console.error(error);
         reply.send(httpErrors[500](error as string));

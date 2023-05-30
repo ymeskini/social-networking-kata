@@ -1,7 +1,17 @@
 import { UUID } from 'crypto';
 
-export class MessageTooLongError extends Error {}
-export class EmptyMessageError extends Error {}
+export class MessageTooLongError extends Error {
+  constructor() {
+    super('Message cannot be longer than 280 characters');
+    super.name = 'MessageTooLongError';
+  }
+}
+export class EmptyMessageError extends Error {
+  constructor() {
+    super('Message cannot be empty');
+    super.name = 'EmptyMessageError';
+  }
+}
 
 export class Message {
   constructor(

@@ -10,22 +10,30 @@ import {
 } from '../application/usecases/view-timeline.usecase';
 import { StubDateProvider } from '../infra/stub-date.provider';
 import { InMemoryMessageRepository } from '../infra/message.inmemory.repository';
+import { DefaultTimelinePresenter } from '../apps/timeline.default.presenter';
+import { TimelinePresenter } from '../application/timeline-presenter';
+import { Timeline } from '../domain/timeline';
 
 // domain specific language
 export const createMessagingFixture = () => {
   let timeline: TimelineMessage[] = [];
+
   const messageRepository = new InMemoryMessageRepository();
   const stubDateProvider = new StubDateProvider();
-  const viewTimelineUseCase = new ViewTimelineUseCase(
-    messageRepository,
-    stubDateProvider,
-  );
+  const timelinePresenter = new DefaultTimelinePresenter(stubDateProvider);
+  const viewTimelineUseCase = new ViewTimelineUseCase(messageRepository);
   const postMessageUseCase = new PostMessageUseCase(
     messageRepository,
     stubDateProvider,
   );
   const editMessageUseCase = new EditMessageUseCase(messageRepository);
   let thrownError: Error;
+  const timeLinePresenter: TimelinePresenter = {
+    show: (theTimeline: Timeline) => {
+      timeline = timelinePresenter.show(theTimeline);
+    },
+  };
+
   return {
     givenTheFollowingMessagesExist: (messages: Message[]) => {
       messageRepository.givenExistingMessages(messages);
@@ -34,26 +42,24 @@ export const createMessagingFixture = () => {
       stubDateProvider.now = now;
     },
     whenUserSeesTheTimelineOf: async (user: string) => {
-      timeline = await viewTimelineUseCase.handle({ user });
+      await viewTimelineUseCase.handle({ user }, timeLinePresenter);
     },
     thenUserShouldSee: (expectedTimeline: TimelineMessage[]) => {
       expect(timeline).toEqual(expectedTimeline);
     },
     async whenUserPostAMessage(postMessageCommand: PostMessageCommand) {
-      try {
-        await postMessageUseCase.handle(postMessageCommand);
-      } catch (error) {
-        thrownError = error as Error;
+      const result = await postMessageUseCase.handle(postMessageCommand);
+      if (result.isErr()) {
+        thrownError = result.error;
       }
     },
     whenUserEditsMessage: async (editMessageCommand: {
       messageId: string;
       text: string;
     }) => {
-      try {
-        await editMessageUseCase.handle(editMessageCommand);
-      } catch (error) {
-        thrownError = error as Error;
+      const result = await editMessageUseCase.handle(editMessageCommand);
+      if (result.isErr()) {
+        thrownError = result.error;
       }
     },
     thenErrorShouldBe(expectedErrorClass: new () => Error) {
