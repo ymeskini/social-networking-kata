@@ -1,45 +1,76 @@
 {
   "name": "crafty",
-  "version": "1.0.0",
-  "description": "Clean Architecture CLI",
-  "license": "ISC",
-  "bin": {
-    "crafty": "dist/cli.js"
-  },
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "private": true,
+  "license": "UNLICENSED",
   "scripts": {
-    "build:cli": "esbuild src/apps/cli.ts --bundle --platform=node --format=cjs --outfile=dist/cli.js",
-    "build:api": "esbuild src/apps/api.ts --bundle --platform=node --format=cjs --outfile=dist/api.js",
-    "db:migrate": "prisma migrate dev",
-    "link": "yarn build:cli && yarn link",
-    "start:api": "node dist/api.js",
+    "build": "nest build",
+    "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "start:prod": "node dist/apps/crafty/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
-    "type": "tsc --noEmit "
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./apps/crafty/test/jest-e2e.json"
   },
   "dependencies": {
-    "@prisma/client": "4.14.1",
-    "commander": "^10.0.1",
-    "date-fns": "^2.30.0",
-    "dotenv": "^16.0.3",
-    "fastify": "^4.17.0",
-    "http-errors": "^2.0.0",
-    "prisma": "^4.14.1"
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/platform-express": "^9.0.0",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.2.0"
   },
   "devDependencies": {
-    "@types/http-errors": "^2.0.1",
-    "@types/jest": "^29.5.1",
-    "@types/node": "^18.13.0",
-    "@ymeskini/eslint-config": "^1.0.2",
-    "@ymeskini/prettier-config": "^1.0.0",
-    "@ymeskini/tsconfig": "^1.1.0",
-    "esbuild": "^0.17.8",
-    "eslint": "^8.41.0",
-    "jest": "^29.5.0",
-    "prettier": "^2.8.8",
-    "testcontainers": "^9.8.0",
-    "ts-jest": "^29.1.0",
-    "typescript": "^5.0.4"
+    "@nestjs/cli": "^9.0.0",
+    "@nestjs/schematics": "^9.0.0",
+    "@nestjs/testing": "^9.0.0",
+    "@types/express": "^4.17.13",
+    "@types/jest": "29.5.1",
+    "@types/node": "18.16.12",
+    "@types/supertest": "^2.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "29.5.0",
+    "prettier": "^2.3.2",
+    "source-map-support": "^0.5.20",
+    "supertest": "^6.1.3",
+    "ts-jest": "29.1.0",
+    "ts-loader": "^9.2.3",
+    "ts-node": "^10.0.0",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "^5.0.0"
   },
-  "prisma": {
-    "schema": "src/infra/prisma/schema.prisma"
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/libs/",
+      "<rootDir>/apps/"
+    ],
+    "moduleNameMapper": {
+      "^crafty/crafty(|/.*)$": "<rootDir>/libs/crafty/src/$1"
+    }
   }
 }
