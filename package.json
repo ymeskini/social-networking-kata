@@ -2,27 +2,32 @@
   "name": "crafty",
   "version": "1.0.0",
   "description": "Clean Architecture CLI",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "yarn type && yarn esbuild",
-    "esbuild": "esbuild index.ts --bundle --platform=node --format=cjs --outfile=dist/index.js",
-    "link": "yarn build && yarn link",
-    "test": "jest",
-    "type": "tsc --noEmit index.ts",
-    "db:migrate": "prisma migrate dev"
-  },
-  "bin": {
-    "crafty": "dist/index.js"
-  },
   "license": "ISC",
+  "bin": {
+    "crafty": "dist/cli.js"
+  },
+  "scripts": {
+    "build:cli": "yarn type && yarn esbuild:cli",
+    "build:api": "yarn type && yarn esbuild:api",
+    "db:migrate": "prisma migrate dev",
+    "esbuild:cli": "esbuild src/apps/cli.ts --bundle --platform=node --format=cjs --outfile=dist/cli.js",
+    "esbuild:api": "esbuild src/apps/api.ts --bundle --platform=node --format=cjs --outfile=dist/api.js",
+    "link": "yarn build && yarn link",
+    "start:api": "node dist/api.js",
+    "test": "jest",
+    "type": "tsc --noEmit src/apps/cli.ts"
+  },
   "dependencies": {
     "@prisma/client": "4.14.1",
     "commander": "^10.0.1",
     "date-fns": "^2.30.0",
     "dotenv": "^16.0.3",
+    "fastify": "^4.17.0",
+    "http-errors": "^2.0.0",
     "prisma": "^4.14.1"
   },
   "devDependencies": {
+    "@types/http-errors": "^2.0.1",
     "@types/jest": "^29.5.1",
     "@types/node": "^18.13.0",
     "@ymeskini/eslint-config": "^1.0.2",

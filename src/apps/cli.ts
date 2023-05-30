@@ -1,27 +1,29 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import { randomUUID } from 'crypto';
+import { PrismaClient } from '@prisma/client';
 
 // infra
-import { FileSystemMessageRepository } from './src/infra/message.fs.repository';
-import { RealDateProvider } from './src/infra/real-date.provider';
-import { FileSystemFolloweeRepository } from './src/infra/followee.fs.repository';
+import { RealDateProvider } from '../infra/real-date.provider';
+import { PrismaMessageRepository } from '../infra/message.prisma.repository';
+import { PrismaFolloweeRepository } from '../infra/followee.prisma.repository';
 
 // usecases
-import { EditMessageUseCase } from './src/application/usecases/edit-message.usecase';
+import { EditMessageUseCase } from '../application/usecases/edit-message.usecase';
 import {
   PostMessageCommand,
   PostMessageUseCase,
-} from './src/application/usecases/post-message.usecase';
-import { ViewTimelineUseCase } from './src/application/usecases/view-timeline.usecase';
-import { FollowUserUseCase } from './src/application/usecases/follow-user.usecase';
-import { ViewWallUseCase } from './src/application/usecases/view-wall.usecase';
+} from '../application/usecases/post-message.usecase';
+import { ViewTimelineUseCase } from '../application/usecases/view-timeline.usecase';
+import { FollowUserUseCase } from '../application/usecases/follow-user.usecase';
+import { ViewWallUseCase } from '../application/usecases/view-wall.usecase';
 
 const program = new Command();
+const prismaClient = new PrismaClient();
 
-const messageRepository = new FileSystemMessageRepository();
+const messageRepository = new PrismaMessageRepository(prismaClient);
+const followeeRepository = new PrismaFolloweeRepository(prismaClient);
 const dateProvider = new RealDateProvider();
-const followeeRepository = new FileSystemFolloweeRepository();
 
 const postMessageUseCase = new PostMessageUseCase(
   messageRepository,
@@ -118,4 +120,10 @@ program
       }),
   );
 
-program.parse(process.argv);
+async function main() {
+  await prismaClient.$connect();
+  await program.parseAsync(process.argv);
+  await prismaClient.$disconnect();
+}
+
+main();
