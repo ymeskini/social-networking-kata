@@ -1,5 +1,7 @@
+import { Injectable } from '@nestjs/common';
 import { differenceInSeconds, formatDistance } from 'date-fns';
 
+@Injectable()
 export abstract class DateProvider {
   abstract getNow(): Date;
   abstract formatRelative(date: Date): string;

@@ -4074,6 +4074,11 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+nest-commander-testing@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/nest-commander-testing/-/nest-commander-testing-3.1.0.tgz#bf1f5fda4426dfb32df26f3ada8371a145730c87"
+  integrity sha512-luHSAAfBMTzIWs8XQD8k2nuJvZB5PyiKg2BxeRbYU5Igx6G2sykHNlhap6OWXKIrC5S6YKU0HuJtvx2I063Qng==
+
 nest-commander@^3.7.1:
   version "3.7.1"
   resolved "https://registry.yarnpkg.com/nest-commander/-/nest-commander-3.7.1.tgz#058195a4f94eefd548e00976e7a6bcba1e32684b"

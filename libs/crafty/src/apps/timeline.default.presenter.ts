@@ -1,8 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { DateProvider } from '../application/date.provider';
 import { TimelinePresenter } from '../application/timeline-presenter';
 import { TimelineMessage } from '../application/usecases/view-timeline.usecase';
 import { Timeline } from '../domain/timeline';
 
+@Injectable()
 export class DefaultTimelinePresenter implements TimelinePresenter {
   constructor(private readonly dateProvider: DateProvider) {}
 

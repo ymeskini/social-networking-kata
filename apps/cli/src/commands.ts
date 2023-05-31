@@ -16,7 +16,7 @@ import { Command, CommandRunner } from 'nest-commander';
 import { CliTimelinePresenter } from './cli.timeline.presenter';
 import { randomUUID } from 'crypto';
 
-Command({ name: 'post', arguments: '<user> <message>' });
+@Command({ name: 'post', arguments: '<user> <message>' })
 class PostCommand extends CommandRunner {
   constructor(private readonly postMessageUseCase: PostMessageUseCase) {
     super();
