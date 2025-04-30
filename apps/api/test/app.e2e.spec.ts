@@ -9,10 +9,10 @@ import {
 import { PrismaClient } from '@prisma/client';
 import { promisify } from 'util';
 import { exec } from 'child_process';
-import { MessageBuilder } from 'crafty/crafty/tests/message.builder';
-import { StubDateProvider } from 'crafty/crafty/infra/stub-date.provider';
-import { DateProvider } from 'crafty/crafty/application/date.provider';
-import { PrismaMessageRepository } from 'crafty/crafty/infra/message.prisma.repository';
+import { MessageBuilder } from 'libs/core/src/tests/message.builder';
+import { StubDateProvider } from 'libs/core/src/infra/stub-date.provider';
+import { DateProvider } from 'libs/core/src/application/date.provider';
+import { PrismaMessageRepository } from 'libs/core/src/infra/message.prisma.repository';
 
 const asyncExec = promisify(exec);
 

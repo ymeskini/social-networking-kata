@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ApiController } from './api.controller';
-import { CraftyModule } from 'crafty/crafty';
-import { PrismaMessageRepository } from 'crafty/crafty/infra/message.prisma.repository';
-import { RealDateProvider } from 'crafty/crafty/infra/real-date.provider';
-import { PrismaFolloweeRepository } from 'crafty/crafty/infra/followee.prisma.repository';
-import { PrismaService } from 'crafty/crafty/infra/prisma/prisma.service';
+import { CraftyModule } from 'libs/core/src';
+import { PrismaMessageRepository } from 'libs/core/src/infra/message.prisma.repository';
+import { RealDateProvider } from 'libs/core/src/infra/real-date.provider';
+import { PrismaFolloweeRepository } from 'libs/core/src/infra/followee.prisma.repository';
+import { PrismaService } from 'libs/core/src/infra/prisma/prisma.service';
 
 @Module({
   imports: [

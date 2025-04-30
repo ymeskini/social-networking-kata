@@ -1,7 +1,7 @@
-import { Timeline } from 'crafty/crafty/domain/timeline';
+import { Timeline } from 'libs/core/src/domain/timeline';
 import { Injectable } from '@nestjs/common';
-import { DateProvider } from 'crafty/crafty/application/date.provider';
-import { TimelinePresenter } from 'crafty/crafty/application/timeline-presenter';
+import { DateProvider } from 'libs/core/src/application/date.provider';
+import { TimelinePresenter } from 'libs/core/src/application/timeline-presenter';
 
 @Injectable()
 export class DefaultTimelinePresenter implements TimelinePresenter {

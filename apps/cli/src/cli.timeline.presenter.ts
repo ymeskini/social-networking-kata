@@ -1,7 +1,7 @@
-import { Timeline } from 'crafty/crafty/domain/timeline';
+import { Timeline } from 'libs/core/src/domain/timeline';
 import { CustomConsoleLogger } from './custom.console.logger';
 import { DefaultTimelinePresenter } from './default.timeline.presenter';
-import { TimelinePresenter } from 'crafty/crafty/application/timeline-presenter';
+import { TimelinePresenter } from 'libs/core/src/application/timeline-presenter';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

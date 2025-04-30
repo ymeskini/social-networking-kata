@@ -8,14 +8,14 @@ import {
 import { randomUUID } from 'crypto';
 import { FastifyReply } from 'fastify';
 
-import { EditMessageUseCase } from 'crafty/crafty/application/usecases/edit-message.usecase';
-import { FollowUserUseCase } from 'crafty/crafty/application/usecases/follow-user.usecase';
+import { EditMessageUseCase } from 'libs/core/src/application/usecases/edit-message.usecase';
+import { FollowUserUseCase } from 'libs/core/src/application/usecases/follow-user.usecase';
 import {
   PostMessageCommand,
   PostMessageUseCase,
-} from 'crafty/crafty/application/usecases/post-message.usecase';
-import { ViewTimelineUseCase } from 'crafty/crafty/application/usecases/view-timeline.usecase';
-import { ViewWallUseCase } from 'crafty/crafty/application/usecases/view-wall.usecase';
+} from 'libs/core/src/application/usecases/post-message.usecase';
+import { ViewTimelineUseCase } from 'libs/core/src/application/usecases/view-timeline.usecase';
+import { ViewWallUseCase } from 'libs/core/src/application/usecases/view-wall.usecase';
 import { ApiTimeLinePresenter } from './timeline.presenter';
 
 @Controller()

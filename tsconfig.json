@@ -9,7 +9,8 @@
     "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -17,12 +18,13 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "types": ["vitest/globals"],
     "paths": {
-      "crafty/crafty": [
-        "libs/crafty/src"
+      "core": [
+        "libs/core/src"
       ],
-      "crafty/crafty/*": [
-        "libs/crafty/src/*"
+      "core/*": [
+        "libs/core/src/*"
       ]
     }
   }

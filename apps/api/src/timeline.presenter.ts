@@ -1,5 +1,5 @@
-import { TimelinePresenter } from 'crafty/crafty/application/timeline-presenter';
-import { Timeline } from 'crafty/crafty/domain/timeline';
+import { TimelinePresenter } from 'libs/core/src/application/timeline-presenter';
+import { Timeline } from 'libs/core/src/domain/timeline';
 import { FastifyReply } from 'fastify';
 
 export class ApiTimeLinePresenter implements TimelinePresenter {

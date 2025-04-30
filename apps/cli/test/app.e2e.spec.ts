@@ -8,10 +8,10 @@ import {
 import { PrismaClient } from '@prisma/client';
 import { promisify } from 'util';
 import { exec } from 'child_process';
-import { StubDateProvider } from 'crafty/crafty/infra/stub-date.provider';
-import { DateProvider } from 'crafty/crafty/application/date.provider';
-import { PrismaMessageRepository } from 'crafty/crafty/infra/message.prisma.repository';
-import { MessageBuilder } from 'crafty/crafty/tests/message.builder';
+import { StubDateProvider } from 'libs/core/src/infra/stub-date.provider';
+import { DateProvider } from 'libs/core/src/application/date.provider';
+import { PrismaMessageRepository } from 'libs/core/src/infra/message.prisma.repository';
+import { MessageBuilder } from 'libs/core/src/tests/message.builder';
 
 const asyncExec = promisify(exec);
 
@@ -45,7 +45,7 @@ describe('Cli App (e2e)', () => {
   }, 10000);
 
   beforeEach(async () => {
-    jest.spyOn(process, 'exit').mockImplementation(() => {
+    vi.spyOn(process, 'exit').mockImplementation(() => {
       return undefined as never;
     });
     commandInstance = await CommandTestFactory.createTestingCommand({
@@ -85,8 +85,8 @@ describe('Cli App (e2e)', () => {
 
   test('view command', async () => {
     const messageRepository = new PrismaMessageRepository(prismaClient);
-    const consoleTable = jest.fn();
-    jest.spyOn(console, 'table').mockImplementation(consoleTable);
+    const consoleTable = vi.fn();
+    vi.spyOn(console, 'table').mockImplementation(consoleTable);
     await messageRepository.save(
       new MessageBuilder()
         .withAuthor('Alice')

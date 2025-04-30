@@ -1,17 +1,17 @@
 import {
   EditMessageCommand,
   EditMessageUseCase,
-} from 'crafty/crafty/application/usecases/edit-message.usecase';
+} from 'libs/core/src/application/usecases/edit-message.usecase';
 import {
   FollowUserCommand,
   FollowUserUseCase,
-} from 'crafty/crafty/application/usecases/follow-user.usecase';
+} from 'libs/core/src/application/usecases/follow-user.usecase';
 import {
   PostMessageCommand,
   PostMessageUseCase,
-} from 'crafty/crafty/application/usecases/post-message.usecase';
-import { ViewTimelineUseCase } from 'crafty/crafty/application/usecases/view-timeline.usecase';
-import { ViewWallUseCase } from 'crafty/crafty/application/usecases/view-wall.usecase';
+} from 'libs/core/src/application/usecases/post-message.usecase';
+import { ViewTimelineUseCase } from 'libs/core/src/application/usecases/view-timeline.usecase';
+import { ViewWallUseCase } from 'libs/core/src/application/usecases/view-wall.usecase';
 import { Command, CommandRunner } from 'nest-commander';
 import { CliTimelinePresenter } from './cli.timeline.presenter';
 import { randomUUID } from 'crypto';
