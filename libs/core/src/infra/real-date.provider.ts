@@ -1,4 +1,4 @@
-import { BaseDateProvider, DateProvider } from '../application/date.provider';
+import { BaseDateProvider, DateProvider } from "../application/date.provider";
 
 export class RealDateProvider extends BaseDateProvider implements DateProvider {
   getNow() {

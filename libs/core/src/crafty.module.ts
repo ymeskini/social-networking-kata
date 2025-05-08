@@ -1,23 +1,23 @@
-import { Module, DynamicModule, ClassProvider } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Module, DynamicModule, ClassProvider } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
 
-import { PostMessageUseCase } from './application/usecases/post-message.usecase';
-import { EditMessageUseCase } from './application/usecases/edit-message.usecase';
-import { FollowUserUseCase } from './application/usecases/follow-user.usecase';
-import { ViewTimelineUseCase } from './application/usecases/view-timeline.usecase';
-import { ViewWallUseCase } from './application/usecases/view-wall.usecase';
-import { MessageRepository } from './application/message.repository';
-import { FolloweeRepository } from './application/followee.repository';
-import { DateProvider } from './application/date.provider';
-import { DefaultTimelinePresenter } from '../../../apps/cli/src/default.timeline.presenter';
+import { PostMessageUseCase } from "./application/usecases/post-message.usecase";
+import { EditMessageUseCase } from "./application/usecases/edit-message.usecase";
+import { FollowUserUseCase } from "./application/usecases/follow-user.usecase";
+import { ViewTimelineUseCase } from "./application/usecases/view-timeline.usecase";
+import { ViewWallUseCase } from "./application/usecases/view-wall.usecase";
+import { MessageRepository } from "./application/message.repository";
+import { FolloweeRepository } from "./application/followee.repository";
+import { DateProvider } from "./application/date.provider";
+import { DefaultTimelinePresenter } from "../../../apps/cli/src/default.timeline.presenter";
 
 @Module({})
 export class CraftyModule {
   static register(providers: {
-    MessageRepository: ClassProvider<MessageRepository>['useClass'];
-    FolloweeRepository: ClassProvider<FolloweeRepository>['useClass'];
-    DateProvider: ClassProvider<DateProvider>['useClass'];
-    PrismaClient: ClassProvider<PrismaClient>['useClass'];
+    MessageRepository: ClassProvider<MessageRepository>["useClass"];
+    FolloweeRepository: ClassProvider<FolloweeRepository>["useClass"];
+    DateProvider: ClassProvider<DateProvider>["useClass"];
+    PrismaClient: ClassProvider<PrismaClient>["useClass"];
   }): DynamicModule {
     return {
       module: CraftyModule,

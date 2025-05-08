@@ -4,19 +4,19 @@ import {
   Controller,
   Post,
   Res,
-} from '@nestjs/common';
-import { randomUUID } from 'crypto';
-import { FastifyReply } from 'fastify';
+} from "@nestjs/common";
+import { randomUUID } from "crypto";
+import { FastifyReply } from "fastify";
 
-import { EditMessageUseCase } from 'libs/core/src/application/usecases/edit-message.usecase';
-import { FollowUserUseCase } from 'libs/core/src/application/usecases/follow-user.usecase';
+import { EditMessageUseCase } from "libs/core/src/application/usecases/edit-message.usecase";
+import { FollowUserUseCase } from "libs/core/src/application/usecases/follow-user.usecase";
 import {
   PostMessageCommand,
   PostMessageUseCase,
-} from 'libs/core/src/application/usecases/post-message.usecase';
-import { ViewTimelineUseCase } from 'libs/core/src/application/usecases/view-timeline.usecase';
-import { ViewWallUseCase } from 'libs/core/src/application/usecases/view-wall.usecase';
-import { ApiTimeLinePresenter } from './timeline.presenter';
+} from "libs/core/src/application/usecases/post-message.usecase";
+import { ViewTimelineUseCase } from "libs/core/src/application/usecases/view-timeline.usecase";
+import { ViewWallUseCase } from "libs/core/src/application/usecases/view-wall.usecase";
+import { ApiTimeLinePresenter } from "./timeline.presenter";
 
 @Controller()
 export class ApiController {
@@ -25,10 +25,10 @@ export class ApiController {
     private readonly editMessageUseCase: EditMessageUseCase,
     private readonly followUserUseCase: FollowUserUseCase,
     private readonly viewTimelineUseCase: ViewTimelineUseCase,
-    private readonly viewWallUseCase: ViewWallUseCase,
+    private readonly viewWallUseCase: ViewWallUseCase
   ) {}
 
-  @Post('/post')
+  @Post("/post")
   async postMessage(@Body() body: { user: string; message: string }) {
     const postMessageCommand: PostMessageCommand = {
       id: randomUUID(),
@@ -42,7 +42,7 @@ export class ApiController {
     }
   }
 
-  @Post('/edit')
+  @Post("/edit")
   async editMessage(@Body() body: { messageId: string; message: string }) {
     try {
       await this.editMessageUseCase.handle({
@@ -54,7 +54,7 @@ export class ApiController {
     }
   }
 
-  @Post('/follow')
+  @Post("/follow")
   async followUser(@Body() body: { user: string; followed: string }) {
     try {
       await this.followUserUseCase.handle({
@@ -66,13 +66,13 @@ export class ApiController {
     }
   }
 
-  @Post('/view')
+  @Post("/view")
   async viewTimeline(@Body() body: { user: string }, @Res() res: FastifyReply) {
     const presenter = new ApiTimeLinePresenter(res);
     await this.viewTimelineUseCase.handle({ user: body.user }, presenter);
   }
 
-  @Post('/wall')
+  @Post("/wall")
   async viewWall(@Body() body: { user: string }, @Res() res: FastifyReply) {
     const presenter = new ApiTimeLinePresenter(res);
     await this.viewWallUseCase.handle(body.user, presenter);
