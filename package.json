@@ -59,6 +59,6 @@
     "vitest": "^3.1.2"
   },
   "prisma": {
-    "schema": "libs/crafty/src/infra/prisma/schema.prisma"
+    "schema": "libs/core/src/infra/prisma/schema.prisma"
   }
 }

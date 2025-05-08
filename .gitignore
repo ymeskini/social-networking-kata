@@ -5,3 +5,4 @@ test-followees.json
 test-messages.json
 
 .DS_Store
+.prisma
