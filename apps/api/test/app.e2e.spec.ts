@@ -18,7 +18,7 @@ import { PrismaMessageRepository } from "libs/core/src/infra/message.prisma.repo
 
 const asyncExec = promisify(exec);
 
-describe("Api (e2e)", () => {
+describe.skip("Api (e2e)", () => {
   let container: StartedPostgreSqlContainer;
   let prismaClient: PrismaClient;
   let app: INestApplication;

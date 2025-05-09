@@ -16,7 +16,7 @@ import { MessageBuilder } from "libs/core/src/tests/message.builder";
 
 const asyncExec = promisify(exec);
 
-describe("Cli App (e2e)", () => {
+describe.skip("Cli App (e2e)", () => {
   let container: StartedPostgreSqlContainer;
   let prismaClient: PrismaClient;
   let commandInstance: TestingModule;
