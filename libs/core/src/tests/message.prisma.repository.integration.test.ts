@@ -7,7 +7,7 @@ import { exec } from "child_process";
 import { PrismaClient } from "@prisma/client";
 
 import { PrismaMessageRepository } from "../infra/message.prisma.repository";
-import { MessageBuilder } from "./message.builder";
+import { MessageBuilder } from "../application/message.builder";
 
 const asyncExec = promisify(exec);
 

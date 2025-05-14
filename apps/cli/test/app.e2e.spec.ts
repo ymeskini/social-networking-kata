@@ -9,19 +9,23 @@ import {
 } from "@testcontainers/postgresql";
 
 import { CliModule } from "../src/cli.module";
-import { StubDateProvider } from "libs/core/src/infra/stub-date.provider";
-import { DateProvider } from "libs/core/src/application/date.provider";
-import { PrismaMessageRepository } from "libs/core/src/infra/message.prisma.repository";
-import { MessageBuilder } from "libs/core/src/tests/message.builder";
+import { StubDateProvider } from "core/infra/stub-date.provider";
+import { DateProvider } from "core/application/date.provider";
+import { PrismaMessageRepository } from "core/infra/message.prisma.repository";
+import { MessageBuilder } from "core/application/message.builder";
 
 const asyncExec = promisify(exec);
 
-describe.skip("Cli App (e2e)", () => {
+describe("Cli App (e2e)", () => {
+  jest.setTimeout(60000);
+
   let container: StartedPostgreSqlContainer;
   let prismaClient: PrismaClient;
   let commandInstance: TestingModule;
+
   const now = new Date("2023-02-14T19:00:00.000Z");
   const dateProvider = new StubDateProvider();
+
   dateProvider.now = now;
   beforeAll(async () => {
     container = await new PostgreSqlContainer()
@@ -36,15 +40,17 @@ describe.skip("Cli App (e2e)", () => {
     )}/crafty?schema=public`;
     prismaClient = new PrismaClient();
     await asyncExec(`DATABASE_URL=${databaseUrl} npx prisma migrate deploy`);
-    vi.stubEnv("DATABASE_URL", databaseUrl);
-
+    process.env.DATABASE_URL = `postgresql://crafty:crafty@${container.getHost()}:${container.getMappedPort(
+      5432
+    )}/crafty`;
     return prismaClient.$connect();
-  }, 10000);
+  });
 
   beforeEach(async () => {
-    vi.spyOn(process, "exit").mockImplementation(() => {
+    jest.spyOn(process, "exit").mockImplementation(() => {
       return undefined as never;
     });
+
     commandInstance = await CommandTestFactory.createTestingCommand({
       imports: [CliModule],
     })
@@ -53,11 +59,13 @@ describe.skip("Cli App (e2e)", () => {
       .overrideProvider(PrismaClient)
       .useValue(prismaClient)
       .compile();
+
     await prismaClient.message.deleteMany();
     await prismaClient.$executeRawUnsafe('DELETE FROM "User" CASCADE');
   });
 
   afterAll(async () => {
+    await prismaClient.$executeRawUnsafe("DROP DATABASE IF EXISTS crafty;");
     await container.stop({ timeout: 1000 });
     return prismaClient.$disconnect();
   });
@@ -82,8 +90,9 @@ describe.skip("Cli App (e2e)", () => {
 
   test("view command", async () => {
     const messageRepository = new PrismaMessageRepository(prismaClient);
-    const consoleTable = vi.fn();
-    vi.spyOn(console, "table").mockImplementation(consoleTable);
+    const consoleTable = jest.fn();
+    jest.spyOn(console, "table").mockImplementation(consoleTable);
+
     await messageRepository.save(
       new MessageBuilder()
         .withAuthor("Alice")

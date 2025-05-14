@@ -1,5 +1,5 @@
-import { TimelinePresenter } from "libs/core/src/application/timeline-presenter";
-import { Timeline } from "libs/core/src/domain/timeline";
+import { TimelinePresenter } from "core/application/timeline-presenter";
+import { Timeline } from "core/domain/timeline";
 import { FastifyReply } from "fastify";
 
 export class ApiTimeLinePresenter implements TimelinePresenter {

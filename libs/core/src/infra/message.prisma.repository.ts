@@ -1,8 +1,9 @@
-import { PrismaClient } from '@prisma/client';
-import { MessageRepository } from '../application/message.repository';
-import { Message } from '../domain/message';
-import { UUID } from 'crypto';
-import { Injectable } from '@nestjs/common';
+import { UUID } from "node:crypto";
+import { Injectable } from "@nestjs/common";
+import { PrismaClient } from "@prisma/client";
+
+import { MessageRepository } from "../application/message.repository";
+import { Message } from "../domain/message";
 
 @Injectable()
 export class PrismaMessageRepository implements MessageRepository {
@@ -40,7 +41,7 @@ export class PrismaMessageRepository implements MessageRepository {
         text: msg.text,
         author: msg.authorId,
         publishedAt: msg.publishedAt.toISOString(),
-      }),
+      })
     );
   }
 

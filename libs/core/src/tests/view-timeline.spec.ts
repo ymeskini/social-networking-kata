@@ -1,4 +1,4 @@
-import { MessageBuilder } from './message.builder';
+import { MessageBuilder } from '../application/message.builder';
 import { MessagingFixture, createMessagingFixture } from './messaging.fixture';
 
 describe('Feature: Viewing a personal timeline', () => {

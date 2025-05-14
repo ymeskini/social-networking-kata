@@ -1,5 +1,9 @@
 import { promisify } from "node:util";
 import { exec } from "node:child_process";
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from "@nestjs/platform-fastify";
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication } from "@nestjs/common";
 import {
@@ -9,22 +13,25 @@ import {
 import * as request from "supertest";
 import { PrismaClient } from "@prisma/client";
 
+import { MessageBuilder } from "core/application/message.builder";
+import { StubDateProvider } from "core/infra/stub-date.provider";
+import { DateProvider } from "core/application/date.provider";
+import { PrismaMessageRepository } from "core/infra/message.prisma.repository";
 import { ApiModule } from "../src/api.module";
-
-import { MessageBuilder } from "libs/core/src/tests/message.builder";
-import { StubDateProvider } from "libs/core/src/infra/stub-date.provider";
-import { DateProvider } from "libs/core/src/application/date.provider";
-import { PrismaMessageRepository } from "libs/core/src/infra/message.prisma.repository";
 
 const asyncExec = promisify(exec);
 
-describe.skip("Api (e2e)", () => {
+describe("Api (e2e)", () => {
+  jest.setTimeout(60000);
+
   let container: StartedPostgreSqlContainer;
   let prismaClient: PrismaClient;
   let app: INestApplication;
+
   const now = new Date("2023-02-14T19:00:00.000Z");
   const dateProvider = new StubDateProvider();
   dateProvider.now = now;
+
   beforeAll(async () => {
     container = await new PostgreSqlContainer()
       .withDatabase("crafty")
@@ -32,19 +39,19 @@ describe.skip("Api (e2e)", () => {
       .withPassword("crafty")
       .withExposedPorts(5432)
       .start();
-    // Ensure we use the postgresql:// protocol
-    const databaseUrl = `postgresql://crafty:crafty@${container.getHost()}:${container.getMappedPort(
+
+    process.env.DATABASE_URL = `postgresql://crafty:crafty@${container.getHost()}:${container.getMappedPort(
       5432
     )}/crafty`;
+
+    await asyncExec(`npx prisma migrate deploy`);
+
     prismaClient = new PrismaClient();
-
-    vi.stubEnv("DATABASE_URL", databaseUrl);
-    await asyncExec(`DATABASE_URL=${databaseUrl} npx prisma migrate deploy`);
-
     return prismaClient.$connect();
   }, 10000);
 
   afterAll(async () => {
+    await prismaClient.$executeRawUnsafe("DROP DATABASE IF EXISTS crafty;");
     await container.stop({ timeout: 1000 });
     return prismaClient.$disconnect();
   });
@@ -59,8 +66,12 @@ describe.skip("Api (e2e)", () => {
       .useValue(prismaClient)
       .compile();
 
-    app = moduleFixture.createNestApplication();
+    app = moduleFixture.createNestApplication<NestFastifyApplication>(
+      new FastifyAdapter()
+    );
     await app.init();
+    await app.getHttpAdapter().getInstance().ready();
+
     await prismaClient.message.deleteMany();
     await prismaClient.$executeRawUnsafe('DELETE FROM "User" CASCADE');
   });

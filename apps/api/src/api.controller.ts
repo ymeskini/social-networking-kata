@@ -8,14 +8,14 @@ import {
 import { randomUUID } from "crypto";
 import { FastifyReply } from "fastify";
 
-import { EditMessageUseCase } from "libs/core/src/application/usecases/edit-message.usecase";
-import { FollowUserUseCase } from "libs/core/src/application/usecases/follow-user.usecase";
+import { EditMessageUseCase } from "core/application/usecases/edit-message.usecase";
+import { FollowUserUseCase } from "core/application/usecases/follow-user.usecase";
 import {
   PostMessageCommand,
   PostMessageUseCase,
-} from "libs/core/src/application/usecases/post-message.usecase";
-import { ViewTimelineUseCase } from "libs/core/src/application/usecases/view-timeline.usecase";
-import { ViewWallUseCase } from "libs/core/src/application/usecases/view-wall.usecase";
+} from "core/application/usecases/post-message.usecase";
+import { ViewTimelineUseCase } from "core/application/usecases/view-timeline.usecase";
+import { ViewWallUseCase } from "core/application/usecases/view-wall.usecase";
 import { ApiTimeLinePresenter } from "./timeline.presenter";
 
 @Controller()

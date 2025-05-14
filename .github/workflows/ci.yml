@@ -2,19 +2,18 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ nestjs ]
   pull_request:
-    branches: [ main ]
+    branches: [ nestjs ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 16
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
         with:
-          node-version: '16'
-      - run: yarn
-      - run: yarn test
-      - run: yarn type
+          node-version: '22'
+      - run: npm ci
+      - run: npm test

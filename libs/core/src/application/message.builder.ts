@@ -1,10 +1,10 @@
-import { UUID, randomUUID } from 'crypto';
-import { Message, MessageText } from '../domain/message';
+import { UUID, randomUUID } from "crypto";
+import { Message, MessageText } from "../domain/message";
 
 export class MessageBuilder {
   private id = randomUUID();
-  private text: MessageText = MessageText.of('Message text');
-  private author = 'Author';
+  private text: MessageText = MessageText.of("Message text");
+  private author = "Author";
   private publishedAt: Date = new Date();
 
   withId(id: UUID) {

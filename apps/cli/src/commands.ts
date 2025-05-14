@@ -4,17 +4,17 @@ import { Command, CommandRunner } from "nest-commander";
 import {
   EditMessageCommand,
   EditMessageUseCase,
-} from "libs/core/src/application/usecases/edit-message.usecase";
+} from "core/application/usecases/edit-message.usecase";
 import {
   FollowUserCommand,
   FollowUserUseCase,
-} from "libs/core/src/application/usecases/follow-user.usecase";
+} from "core/application/usecases/follow-user.usecase";
 import {
   PostMessageCommand,
   PostMessageUseCase,
-} from "libs/core/src/application/usecases/post-message.usecase";
-import { ViewTimelineUseCase } from "libs/core/src/application/usecases/view-timeline.usecase";
-import { ViewWallUseCase } from "libs/core/src/application/usecases/view-wall.usecase";
+} from "core/application/usecases/post-message.usecase";
+import { ViewTimelineUseCase } from "core/application/usecases/view-timeline.usecase";
+import { ViewWallUseCase } from "core/application/usecases/view-wall.usecase";
 import { CliTimelinePresenter } from "./cli.timeline.presenter";
 
 @Command({ name: "post", arguments: "<user> <message>" })

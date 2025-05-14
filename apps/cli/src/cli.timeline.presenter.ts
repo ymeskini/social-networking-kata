@@ -1,8 +1,9 @@
-import { Timeline } from "libs/core/src/domain/timeline";
+import { Injectable } from "@nestjs/common";
+import { Timeline } from "core/domain/timeline";
+import { TimelinePresenter } from "core/application/timeline-presenter";
+
 import { CustomConsoleLogger } from "./custom.console.logger";
 import { DefaultTimelinePresenter } from "./default.timeline.presenter";
-import { TimelinePresenter } from "libs/core/src/application/timeline-presenter";
-import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class CliTimelinePresenter implements TimelinePresenter {

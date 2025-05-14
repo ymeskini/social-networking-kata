@@ -2,7 +2,7 @@ import { join } from 'path';
 import { writeFile, unlink, readFile } from 'fs/promises';
 
 import { FileSystemMessageRepository } from '../infra/message.fs.repository';
-import { MessageBuilder } from './message.builder';
+import { MessageBuilder } from '../application/message.builder';
 import { randomUUID } from 'crypto';
 
 const testMessagesPath = join(__dirname, 'test-messages.json');

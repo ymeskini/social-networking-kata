@@ -1,5 +1,5 @@
 import { EmptyMessageError, MessageTooLongError } from '../domain/message';
-import { MessageBuilder } from './message.builder';
+import { MessageBuilder } from '../application/message.builder';
 import { MessagingFixture, createMessagingFixture } from './messaging.fixture';
 
 describe('Feature: editing a message', () => {
