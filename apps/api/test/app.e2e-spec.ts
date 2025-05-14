@@ -12,7 +12,7 @@ import {
   StartedPostgreSqlContainer,
 } from "@testcontainers/postgresql";
 import * as request from "supertest";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../../.prisma/client";
 
 import { MessageBuilder } from "core/application/message.builder";
 import { StubDateProvider } from "core/infra/stub-date.provider";
@@ -40,9 +40,7 @@ describe("Api (e2e)", () => {
       .withPassword("crafty")
       .withExposedPorts(5432)
       .start();
-
     const DATABASE_URL = container.getConnectionUri();
-
     process.env.DATABASE_URL = DATABASE_URL;
 
     await asyncExec(`DATABASE_URL=${DATABASE_URL} npx prisma migrate deploy`);

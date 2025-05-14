@@ -2,9 +2,9 @@ import {
   PostgreSqlContainer,
   StartedPostgreSqlContainer,
 } from "@testcontainers/postgresql";
-import { promisify } from "util";
-import { exec } from "child_process";
-import { PrismaClient } from "@prisma/client";
+import { promisify } from "node:util";
+import { exec } from "node:child_process";
+import { PrismaClient } from "../../../../.prisma/client";
 
 import { PrismaMessageRepository } from "../infra/message.prisma.repository";
 import { MessageBuilder } from "../application/message.builder";

@@ -1,7 +1,7 @@
 import { exec } from "node:child_process";
 import { promisify } from "node:util";
 import { TestingModule } from "@nestjs/testing";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../../.prisma/client";
 import { CommandTestFactory } from "nest-commander-testing";
 import {
   PostgreSqlContainer,

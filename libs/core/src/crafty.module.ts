@@ -1,5 +1,5 @@
 import { Module, DynamicModule, ClassProvider } from "@nestjs/common";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../../.prisma/client";
 
 import { PostMessageUseCase } from "./application/usecases/post-message.usecase";
 import { EditMessageUseCase } from "./application/usecases/edit-message.usecase";
