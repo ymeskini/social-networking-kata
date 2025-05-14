@@ -1,5 +1,5 @@
-import { Message } from '../domain/message';
-import { MessageRepository } from '../application/message.repository';
+import { Message } from "../domain/message";
+import { MessageRepository } from "../application/message.repository";
 
 export class InMemoryMessageRepository implements MessageRepository {
   messages = new Map<string, Message>();
@@ -10,8 +10,7 @@ export class InMemoryMessageRepository implements MessageRepository {
   }
 
   async getMessageById(messageId: string) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return Promise.resolve(this.messages.get(messageId)!);
+    return Promise.resolve(this.messages.get(messageId));
   }
 
   givenExistingMessages = (messages: Message[]) => {

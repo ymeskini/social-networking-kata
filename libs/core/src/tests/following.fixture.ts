@@ -1,15 +1,15 @@
 import {
   FollowUserCommand,
   FollowUserUseCase,
-} from '../application/usecases/follow-user.usecase';
-import { InMemoryFolloweeRepository } from '../infra/followee.inmemory.repository';
+} from "../application/usecases/follow-user.usecase";
+import { InMemoryFolloweeRepository } from "../infra/followee.inmemory.repository";
 
 export const createFollowUserFixture = () => {
   const followeeRepository = new InMemoryFolloweeRepository();
   const followUserUseCase = new FollowUserUseCase(followeeRepository);
 
   return {
-    givenUserFollowees: async ({
+    givenUserFollowees: ({
       user,
       followees,
     }: {

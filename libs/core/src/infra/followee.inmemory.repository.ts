@@ -1,7 +1,7 @@
 import {
   Followee,
   FolloweeRepository,
-} from '../application/followee.repository';
+} from "../application/followee.repository";
 
 export class InMemoryFolloweeRepository implements FolloweeRepository {
   followeesByUser = new Map<string, string[]>();

@@ -9,7 +9,7 @@ import { ApiModule } from "./api.module";
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     ApiModule,
-    new FastifyAdapter()
+    new FastifyAdapter(),
   );
   await app.listen(3000);
 }

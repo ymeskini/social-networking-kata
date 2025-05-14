@@ -4,6 +4,7 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from "@nestjs/platform-fastify";
+import { FastifyInstance } from "fastify";
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication } from "@nestjs/common";
 import {
@@ -40,19 +41,18 @@ describe("Api (e2e)", () => {
       .withExposedPorts(5432)
       .start();
 
-    process.env.DATABASE_URL = `postgresql://crafty:crafty@${container.getHost()}:${container.getMappedPort(
-      5432
-    )}/crafty`;
+    const DATABASE_URL = container.getConnectionUri();
 
-    await asyncExec("npx prisma migrate deploy");
+    process.env.DATABASE_URL = DATABASE_URL;
+
+    await asyncExec(`DATABASE_URL=${DATABASE_URL} npx prisma migrate deploy`);
 
     prismaClient = new PrismaClient();
     return prismaClient.$connect();
   });
 
   afterAll(async () => {
-    await prismaClient.$executeRawUnsafe("DROP DATABASE IF EXISTS crafty;");
-    await container.stop({ timeout: 1000 });
+    await container.stop();
     return prismaClient.$disconnect();
   });
 
@@ -67,10 +67,11 @@ describe("Api (e2e)", () => {
       .compile();
 
     app = moduleFixture.createNestApplication<NestFastifyApplication>(
-      new FastifyAdapter()
+      new FastifyAdapter(),
     );
     await app.init();
-    await app.getHttpAdapter().getInstance().ready();
+    const instance = app.getHttpAdapter().getInstance() as FastifyInstance;
+    await instance.ready();
 
     await prismaClient.message.deleteMany();
     await prismaClient.$executeRawUnsafe('DELETE FROM "User" CASCADE');
@@ -101,7 +102,7 @@ describe("Api (e2e)", () => {
         .withAuthor("Alice")
         .withPublishedAt(now)
         .withText("Message Test View Api")
-        .build()
+        .build(),
     );
 
     await request(app.getHttpServer())

@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { differenceInSeconds, formatDistance } from 'date-fns';
+import { Injectable } from "@nestjs/common";
+import { differenceInSeconds, formatDistance } from "date-fns";
 
 @Injectable()
 export abstract class DateProvider {
@@ -12,7 +12,7 @@ export class BaseDateProvider {
     const seconds = differenceInSeconds(now, date);
 
     if (seconds < 60) {
-      return 'less than a minute ago';
+      return "less than a minute ago";
     }
 
     return formatDistance(date, now, { addSuffix: true });

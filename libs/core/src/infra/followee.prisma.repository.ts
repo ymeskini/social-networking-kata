@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 import {
   Followee,
   FolloweeRepository,
-} from '../application/followee.repository';
-import { Injectable } from '@nestjs/common';
+} from "../application/followee.repository";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class PrismaFolloweeRepository implements FolloweeRepository {

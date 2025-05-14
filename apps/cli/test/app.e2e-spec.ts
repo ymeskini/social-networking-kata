@@ -8,11 +8,12 @@ import {
   StartedPostgreSqlContainer,
 } from "@testcontainers/postgresql";
 
-import { CliModule } from "../src/cli.module";
 import { StubDateProvider } from "core/infra/stub-date.provider";
 import { DateProvider } from "core/application/date.provider";
 import { PrismaMessageRepository } from "core/infra/message.prisma.repository";
 import { MessageBuilder } from "core/application/message.builder";
+
+import { CliModule } from "../src/cli.module";
 
 const asyncExec = promisify(exec);
 
@@ -27,6 +28,7 @@ describe("Cli App (e2e)", () => {
   const dateProvider = new StubDateProvider();
 
   dateProvider.now = now;
+
   beforeAll(async () => {
     container = await new PostgreSqlContainer()
       .withDatabase("crafty")
@@ -34,15 +36,12 @@ describe("Cli App (e2e)", () => {
       .withPassword("crafty")
       .withExposedPorts(5432)
       .start();
-    // Ensure we use the postgresql:// protocol
-    const databaseUrl = `postgresql://crafty:crafty@${container.getHost()}:${container.getMappedPort(
-      5432
-    )}/crafty?schema=public`;
+
+    const DATABASE_URL = container.getConnectionUri();
+    process.env.DATABASE_URL = DATABASE_URL;
+    await asyncExec(`DATABASE_URL=${DATABASE_URL} npx prisma migrate deploy`);
+
     prismaClient = new PrismaClient();
-    await asyncExec(`DATABASE_URL=${databaseUrl} npx prisma migrate deploy`);
-    process.env.DATABASE_URL = `postgresql://crafty:crafty@${container.getHost()}:${container.getMappedPort(
-      5432
-    )}/crafty`;
     return prismaClient.$connect();
   });
 
@@ -65,8 +64,7 @@ describe("Cli App (e2e)", () => {
   });
 
   afterAll(async () => {
-    await prismaClient.$executeRawUnsafe("DROP DATABASE IF EXISTS crafty;");
-    await container.stop({ timeout: 1000 });
+    await container.stop();
     return prismaClient.$disconnect();
   });
 
@@ -98,7 +96,7 @@ describe("Cli App (e2e)", () => {
         .withAuthor("Alice")
         .withPublishedAt(now)
         .withText("Message Test View command")
-        .build()
+        .build(),
     );
 
     await CommandTestFactory.run(commandInstance, ["view", "Alice"]);

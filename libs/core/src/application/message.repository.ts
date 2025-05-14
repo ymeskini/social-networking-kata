@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { Message } from '../domain/message';
+import { Injectable } from "@nestjs/common";
+import { Message } from "../domain/message";
 
 // it's possible in typescript to implements an abstract class
 @Injectable()

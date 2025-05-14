@@ -1,4 +1,4 @@
-import { ConsoleLogger, Injectable } from '@nestjs/common';
+import { ConsoleLogger, Injectable } from "@nestjs/common";
 
 @Injectable()
 export class CustomConsoleLogger extends ConsoleLogger {

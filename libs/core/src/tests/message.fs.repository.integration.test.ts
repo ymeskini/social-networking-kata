@@ -1,13 +1,14 @@
-import { join } from 'path';
-import { writeFile, unlink, readFile } from 'fs/promises';
+import { join } from "path";
+import { writeFile, unlink, readFile } from "fs/promises";
 
-import { FileSystemMessageRepository } from '../infra/message.fs.repository';
-import { MessageBuilder } from '../application/message.builder';
-import { randomUUID } from 'crypto';
+import { FileSystemMessageRepository } from "../infra/message.fs.repository";
+import { MessageBuilder } from "../application/message.builder";
+import { randomUUID } from "crypto";
+import { Message } from "core/domain/message";
 
-const testMessagesPath = join(__dirname, 'test-messages.json');
+const testMessagesPath = join(__dirname, "test-messages.json");
 
-describe('FileSystemMessageRepository', () => {
+describe("FileSystemMessageRepository", () => {
   const messageBuilder = new MessageBuilder();
 
   beforeEach(async () => {
@@ -17,36 +18,36 @@ describe('FileSystemMessageRepository', () => {
   afterEach(async () => {
     try {
       await unlink(testMessagesPath);
-    } catch (error) {
+    } catch {
       // ignore error
     }
   });
 
-  test('save() should save a message', async () => {
+  test("save() should save a message", async () => {
     const messageRepository = new FileSystemMessageRepository(testMessagesPath);
     const id = randomUUID();
     await messageRepository.save(
       messageBuilder
-        .withAuthor('Alice')
+        .withAuthor("Alice")
         .withId(id)
-        .withPublishedAt(new Date('2023-02-07T10:40:00.000Z'))
-        .withText('Hello World')
+        .withPublishedAt(new Date("2023-02-07T10:40:00.000Z"))
+        .withText("Hello World")
         .build(),
     );
 
-    const messageData = await readFile(testMessagesPath, 'utf-8');
-    const messages = JSON.parse(messageData);
+    const messageData = await readFile(testMessagesPath, "utf-8");
+    const messages = JSON.parse(messageData) as Message[];
     expect(messages).toEqual([
       {
         id: id,
-        text: 'Hello World',
-        publishedAt: '2023-02-07T10:40:00.000Z',
-        author: 'Alice',
+        text: "Hello World",
+        publishedAt: "2023-02-07T10:40:00.000Z",
+        author: "Alice",
       },
     ]);
   });
 
-  test('save() can update a message', async () => {
+  test("save() can update a message", async () => {
     const messageRepository = new FileSystemMessageRepository(testMessagesPath);
     const id = randomUUID();
     await writeFile(
@@ -54,34 +55,34 @@ describe('FileSystemMessageRepository', () => {
       JSON.stringify([
         {
           id: id,
-          text: 'Hello World',
-          publishedAt: '2023-02-07T10:40:00.000Z',
-          author: 'Alice',
+          text: "Hello World",
+          publishedAt: "2023-02-07T10:40:00.000Z",
+          author: "Alice",
         },
       ]),
     );
     await messageRepository.save(
       messageBuilder
-        .withAuthor('Alice')
+        .withAuthor("Alice")
         .withId(id)
-        .withPublishedAt(new Date('2023-02-07T10:40:00.000Z'))
-        .withText('Hello Edited World')
+        .withPublishedAt(new Date("2023-02-07T10:40:00.000Z"))
+        .withText("Hello Edited World")
         .build(),
     );
 
-    const messageData = await readFile(testMessagesPath, 'utf-8');
-    const messages = JSON.parse(messageData);
+    const messageData = await readFile(testMessagesPath, "utf-8");
+    const messages = JSON.parse(messageData) as Message[];
     expect(messages).toEqual([
       {
         id: id,
-        text: 'Hello Edited World',
-        publishedAt: '2023-02-07T10:40:00.000Z',
-        author: 'Alice',
+        text: "Hello Edited World",
+        publishedAt: "2023-02-07T10:40:00.000Z",
+        author: "Alice",
       },
     ]);
   });
 
-  test('getById should return the correct message', async () => {
+  test("getById should return the correct message", async () => {
     const messageRepository = new FileSystemMessageRepository(testMessagesPath);
     const id = randomUUID();
     await writeFile(
@@ -89,15 +90,15 @@ describe('FileSystemMessageRepository', () => {
       JSON.stringify([
         {
           id: id,
-          text: 'This is it!!!',
-          publishedAt: '2023-02-07T10:40:00.000Z',
-          author: 'Bobby',
+          text: "This is it!!!",
+          publishedAt: "2023-02-07T10:40:00.000Z",
+          author: "Bobby",
         },
         {
-          id: '123',
-          text: 'WooooooW!',
-          publishedAt: '2023-02-07T11:40:00.000Z',
-          author: 'Alice',
+          id: "123",
+          text: "WooooooW!",
+          publishedAt: "2023-02-07T11:40:00.000Z",
+          author: "Alice",
         },
       ]),
     );
@@ -106,15 +107,15 @@ describe('FileSystemMessageRepository', () => {
 
     expect(message).toEqual(
       messageBuilder
-        .withAuthor('Bobby')
+        .withAuthor("Bobby")
         .withId(id)
-        .withPublishedAt(new Date('2023-02-07T10:40:00.000Z'))
-        .withText('This is it!!!')
+        .withPublishedAt(new Date("2023-02-07T10:40:00.000Z"))
+        .withText("This is it!!!")
         .build(),
     );
   });
 
-  test('getMessagesByUser() should return all messages of a user', async () => {
+  test("getMessagesByUser() should return all messages of a user", async () => {
     const messageRepository = new FileSystemMessageRepository(testMessagesPath);
     const firstId = randomUUID();
     const secondId = randomUUID();
@@ -122,42 +123,42 @@ describe('FileSystemMessageRepository', () => {
       testMessagesPath,
       JSON.stringify([
         {
-          id: 'id',
-          text: 'This is it!!!',
-          publishedAt: '2023-02-07T10:40:00.000Z',
-          author: 'Bobby',
+          id: "id",
+          text: "This is it!!!",
+          publishedAt: "2023-02-07T10:40:00.000Z",
+          author: "Bobby",
         },
         {
           id: firstId,
-          text: 'WooooooW!',
-          publishedAt: '2023-02-07T11:40:00.000Z',
-          author: 'Alice',
+          text: "WooooooW!",
+          publishedAt: "2023-02-07T11:40:00.000Z",
+          author: "Alice",
         },
         {
           id: secondId,
-          text: 'WooooooW! HaaaaaH',
-          publishedAt: '2023-02-08T11:40:00.000Z',
-          author: 'Alice',
+          text: "WooooooW! HaaaaaH",
+          publishedAt: "2023-02-08T11:40:00.000Z",
+          author: "Alice",
         },
       ]),
     );
 
-    const aliceMessages = await messageRepository.getMessagesByUser('Alice');
+    const aliceMessages = await messageRepository.getMessagesByUser("Alice");
 
     expect(aliceMessages).toHaveLength(2);
 
     expect(aliceMessages).toEqual([
       messageBuilder
-        .withAuthor('Alice')
+        .withAuthor("Alice")
         .withId(firstId)
-        .withPublishedAt(new Date('2023-02-07T11:40:00.000Z'))
-        .withText('WooooooW!')
+        .withPublishedAt(new Date("2023-02-07T11:40:00.000Z"))
+        .withText("WooooooW!")
         .build(),
       messageBuilder
-        .withAuthor('Alice')
+        .withAuthor("Alice")
         .withId(secondId)
-        .withPublishedAt(new Date('2023-02-08T11:40:00.000Z'))
-        .withText('WooooooW! HaaaaaH')
+        .withPublishedAt(new Date("2023-02-08T11:40:00.000Z"))
+        .withText("WooooooW! HaaaaaH")
         .build(),
     ]);
   });

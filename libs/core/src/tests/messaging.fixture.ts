@@ -1,18 +1,18 @@
-import { EditMessageUseCase } from '../application/usecases/edit-message.usecase';
-import { Message } from '../domain/message';
+import { EditMessageUseCase } from "../application/usecases/edit-message.usecase";
+import { Message } from "../domain/message";
 import {
   PostMessageCommand,
   PostMessageUseCase,
-} from '../application/usecases/post-message.usecase';
+} from "../application/usecases/post-message.usecase";
 import {
   TimelineMessage,
   ViewTimelineUseCase,
-} from '../application/usecases/view-timeline.usecase';
-import { StubDateProvider } from '../infra/stub-date.provider';
-import { InMemoryMessageRepository } from '../infra/message.inmemory.repository';
-import { DefaultTimelinePresenter } from '../application/timeline.default.presenter';
-import { TimelinePresenter } from '../application/timeline-presenter';
-import { Timeline } from '../domain/timeline';
+} from "../application/usecases/view-timeline.usecase";
+import { StubDateProvider } from "../infra/stub-date.provider";
+import { InMemoryMessageRepository } from "../infra/message.inmemory.repository";
+import { DefaultTimelinePresenter } from "../application/timeline.default.presenter";
+import { TimelinePresenter } from "../application/timeline-presenter";
+import { Timeline } from "../domain/timeline";
 
 // domain specific language
 export const createMessagingFixture = () => {

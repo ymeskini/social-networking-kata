@@ -1,12 +1,12 @@
-import { join } from 'path';
-import { writeFile, readFile } from 'fs/promises';
+import { join } from "path";
+import { writeFile, readFile } from "fs/promises";
 
-import { MessageRepository } from '../application/message.repository';
-import { Message } from '../domain/message';
-import { UUID } from 'crypto';
+import { MessageRepository } from "../application/message.repository";
+import { Message } from "../domain/message";
+import { UUID } from "crypto";
 
 export class FileSystemMessageRepository implements MessageRepository {
-  constructor(private readonly FILE_PATH = join(__dirname, 'message.json')) {}
+  constructor(private readonly FILE_PATH = join(__dirname, "message.json")) {}
 
   async save(message: Message): Promise<void> {
     const messages = await this.getMessages();
@@ -39,13 +39,13 @@ export class FileSystemMessageRepository implements MessageRepository {
     const messages = await this.getMessages();
     const message = messages.find((msg) => msg.id === messageId);
     if (!message) {
-      throw new Error('Message not found');
+      throw new Error("Message not found");
     }
     return message;
   }
 
   private async getMessages(): Promise<Message[]> {
-    const fileContent = await readFile(this.FILE_PATH, 'utf-8');
+    const fileContent = await readFile(this.FILE_PATH, "utf-8");
     const messages = JSON.parse(fileContent) as {
       id: UUID;
       author: string;

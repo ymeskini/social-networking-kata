@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { Timeline } from '../../domain/timeline';
-import { FolloweeRepository } from '../followee.repository';
-import { MessageRepository } from '../message.repository';
-import { TimelinePresenter } from '../timeline-presenter';
+import { Injectable } from "@nestjs/common";
+import { Timeline } from "../../domain/timeline";
+import { FolloweeRepository } from "../followee.repository";
+import { MessageRepository } from "../message.repository";
+import { TimelinePresenter } from "../timeline-presenter";
 
 @Injectable()
 export class ViewWallUseCase {

@@ -9,7 +9,7 @@ import { DefaultTimelinePresenter } from "./default.timeline.presenter";
 export class CliTimelinePresenter implements TimelinePresenter {
   constructor(
     private readonly defaultTimelinePresenter: DefaultTimelinePresenter,
-    private readonly logger: CustomConsoleLogger
+    private readonly logger: CustomConsoleLogger,
   ) {}
   show(timeline: Timeline): void {
     this.logger.table(this.defaultTimelinePresenter.show(timeline));

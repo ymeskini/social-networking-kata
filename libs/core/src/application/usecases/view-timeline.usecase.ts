@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Timeline } from '../../domain/timeline';
-import { MessageRepository } from '../message.repository';
-import { TimelinePresenter } from '../timeline-presenter';
+import { Injectable } from "@nestjs/common";
+import { Timeline } from "../../domain/timeline";
+import { MessageRepository } from "../message.repository";
+import { TimelinePresenter } from "../timeline-presenter";
 
 export type TimelineMessage = {
   author: string;

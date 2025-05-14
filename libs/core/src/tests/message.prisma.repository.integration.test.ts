@@ -18,13 +18,12 @@ describe("MessagePrismaRepository", () => {
 
   beforeAll(async () => {
     container = await new PostgreSqlContainer().start();
-    // Ensure connectionUri uses the correct protocol
     const connectionUri = container.getConnectionUri();
 
     prismaClient = new PrismaClient();
 
     await asyncExec(`DATABASE_URL=${connectionUri} npx prisma migrate deploy`);
-    vi.stubEnv("DATABASE_URL", connectionUri);
+    process.env.DATABASE_URL = connectionUri;
 
     await prismaClient.$connect();
   }, 30000);

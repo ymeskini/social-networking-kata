@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { EmptyMessageError, MessageTooLongError } from '../../domain/message';
-import { MessageRepository } from '../message.repository';
-import { Err } from '../result';
-import { Ok } from '../result';
-import { Result } from '../result';
+import { Injectable } from "@nestjs/common";
+import { EmptyMessageError, MessageTooLongError } from "../../domain/message";
+import { MessageRepository } from "../message.repository";
+import { Err } from "../result";
+import { Ok } from "../result";
+import { Result } from "../result";
 
 export type EditMessageCommand = {
   messageId: string;

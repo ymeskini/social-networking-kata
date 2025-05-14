@@ -18,3 +18,5 @@ jobs:
       - run: npm ci
       - run: npx prisma generate
       - run: npm test
+      - run: npm run test:e2e
+      - run: npm run lint

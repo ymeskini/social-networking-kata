@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { DateProvider } from '../date.provider';
+import { DateProvider } from "../date.provider";
 import {
   EmptyMessageError,
   Message,
   MessageTooLongError,
-} from '../../domain/message';
-import { MessageRepository } from '../message.repository';
-import { UUID } from 'crypto';
-import { Err, Ok, Result } from '../result';
+} from "../../domain/message";
+import { MessageRepository } from "../message.repository";
+import { UUID } from "crypto";
+import { Err, Ok, Result } from "../result";
 
 export type PostMessageCommand = {
   text: string;

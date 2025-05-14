@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { FolloweeRepository } from '../followee.repository';
+import { Injectable } from "@nestjs/common";
+import { FolloweeRepository } from "../followee.repository";
 
 export type FollowUserCommand = {
   user: string;

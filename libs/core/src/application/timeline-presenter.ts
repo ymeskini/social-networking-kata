@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 
-import { Timeline } from '../domain/timeline';
+import { Timeline } from "../domain/timeline";
 
 @Injectable()
 export abstract class TimelinePresenter {

@@ -25,7 +25,7 @@ export class ApiController {
     private readonly editMessageUseCase: EditMessageUseCase,
     private readonly followUserUseCase: FollowUserUseCase,
     private readonly viewTimelineUseCase: ViewTimelineUseCase,
-    private readonly viewWallUseCase: ViewWallUseCase
+    private readonly viewWallUseCase: ViewWallUseCase,
   ) {}
 
   @Post("/post")

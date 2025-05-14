@@ -9,7 +9,7 @@ export class DefaultTimelinePresenter implements TimelinePresenter {
   constructor(private readonly dateProvider: DateProvider) {}
 
   show(
-    timeline: Timeline
+    timeline: Timeline,
   ): { author: string; text: string; publicationTime: string }[] {
     const messages = timeline.data;
     return messages.map((m) => ({

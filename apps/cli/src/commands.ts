@@ -87,7 +87,7 @@ class FollowCommand extends CommandRunner {
 class ViewCommand extends CommandRunner {
   constructor(
     private readonly cliPresenter: CliTimelinePresenter,
-    private readonly viewTimelineUseCase: ViewTimelineUseCase
+    private readonly viewTimelineUseCase: ViewTimelineUseCase,
   ) {
     super();
   }
@@ -96,7 +96,7 @@ class ViewCommand extends CommandRunner {
     try {
       await this.viewTimelineUseCase.handle(
         { user: passedParams[0] },
-        this.cliPresenter
+        this.cliPresenter,
       );
     } catch (err) {
       console.error("❌", err);
@@ -109,7 +109,7 @@ class ViewCommand extends CommandRunner {
 class WallCommand extends CommandRunner {
   constructor(
     private readonly cliPresenter: CliTimelinePresenter,
-    private readonly viewWallUseCase: ViewWallUseCase
+    private readonly viewWallUseCase: ViewWallUseCase,
   ) {
     super();
   }

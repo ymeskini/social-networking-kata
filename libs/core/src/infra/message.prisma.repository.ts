@@ -41,7 +41,7 @@ export class PrismaMessageRepository implements MessageRepository {
         text: msg.text,
         author: msg.authorId,
         publishedAt: msg.publishedAt.toISOString(),
-      })
+      }),
     );
   }
 

@@ -1,15 +1,15 @@
-import { UUID } from 'crypto';
+import { UUID } from "crypto";
 
 export class MessageTooLongError extends Error {
   constructor() {
-    super('Message cannot be longer than 280 characters');
-    super.name = 'MessageTooLongError';
+    super("Message cannot be longer than 280 characters");
+    super.name = "MessageTooLongError";
   }
 }
 export class EmptyMessageError extends Error {
   constructor() {
-    super('Message cannot be empty');
-    super.name = 'EmptyMessageError';
+    super("Message cannot be empty");
+    super.name = "EmptyMessageError";
   }
 }
 
@@ -52,7 +52,7 @@ export class Message {
   }
 
   // deserialize
-  static fromData(data: Message['data']) {
+  static fromData(data: Message["data"]) {
     return new Message(
       data.id,
       MessageText.of(data.text),
