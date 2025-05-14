@@ -48,7 +48,7 @@ describe("Api (e2e)", () => {
 
     prismaClient = new PrismaClient();
     return prismaClient.$connect();
-  }, 10000);
+  });
 
   afterAll(async () => {
     await prismaClient.$executeRawUnsafe("DROP DATABASE IF EXISTS crafty;");
