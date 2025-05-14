@@ -44,7 +44,7 @@ describe("Api (e2e)", () => {
       5432
     )}/crafty`;
 
-    await asyncExec(`npx prisma migrate deploy`);
+    await asyncExec("npx prisma migrate deploy");
 
     prismaClient = new PrismaClient();
     return prismaClient.$connect();
