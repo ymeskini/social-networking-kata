@@ -1,7 +1,7 @@
 import {
   PostgreSqlContainer,
   StartedPostgreSqlContainer,
-} from 'testcontainers';
+} from '@testcontainers/postgresql';
 import { promisify } from 'util';
 import { exec } from 'child_process';
 import { PrismaClient } from '@prisma/client';
