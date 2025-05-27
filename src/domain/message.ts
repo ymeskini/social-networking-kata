@@ -1,15 +1,15 @@
-import { UUID } from 'crypto';
+import { UUID } from 'node:crypto';
 
 export class MessageTooLongError extends Error {
   constructor() {
     super('Message cannot be longer than 280 characters');
-    super.name = 'MessageTooLongError';
+    this.name = 'MessageTooLongError';
   }
 }
 export class EmptyMessageError extends Error {
   constructor() {
     super('Message cannot be empty');
-    super.name = 'EmptyMessageError';
+    this.name = 'EmptyMessageError';
   }
 }
 
